@@ -12,5 +12,6 @@ public class TestIoc {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         UserDao userDao = (UserDao) applicationContext.getBean("userDao");
         userDao.say();
+
     }
 }
