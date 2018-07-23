@@ -4,6 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="userDao" class="edu.cqupt.eini.ioc.UserDaoImpl"></bean>
     <bean id="userService" class="edu.cqupt.eini.ioc.UserServiceImpl">
+        <!--xxx的属性对应setXxx()方法-->
         <property name="userDao" ref="userDao"></property>
     </bean>
 </beans>
