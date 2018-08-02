@@ -9,8 +9,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class TestDI {
     public static void main(String[] args) {
+        String xmlPath= "ioc.xml";
         ApplicationContext applicationContext =
-                new ClassPathXmlApplicationContext("applicationContext.xml");
+                new ClassPathXmlApplicationContext(xmlPath);
         UserService userService = (UserService) applicationContext.getBean("userService");
         userService.say();
     }
