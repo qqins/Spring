@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cqupt.eini.chapter06.CustomerMapper">
+    <!--根据客户编号获取客户信息-->
+    <select id="findCustomerById" parameterType="Integer" resultType="edu.cqupt.eini.chapter06.po.Customer">
+        select * from t_customer where id = #{id}
+    </select>
+
+    <!--根据客户名模糊查询客户信息列表-->
+    <select id="findCustomerByName" parameterType="String" resultType="edu.cqupt.eini.chapter06.po.Customer">
+        select * from t_customer where username like concat('%',#{value},'%')
+    </select>
+</mapper>
