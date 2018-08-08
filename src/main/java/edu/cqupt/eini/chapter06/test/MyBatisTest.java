@@ -58,4 +58,99 @@ public class MyBatisTest {
         }
         sqlSession.close();
     }
+
+    /**
+     * 添加客户
+     */
+    @Test
+    void addCustomer() throws IOException {
+        //1, 读取配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //2, 根据配置文件构建SqlSessionFactory
+        SqlSessionFactory sqlSessionFactory =
+                new SqlSessionFactoryBuilder().build(inputStream);
+        //3, 通过SqlSessionFactory创建SqlSession
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //4, SqlSession执行添加操作
+        //4.1, 创建Customer对象, 并向对象中添加数据
+        Customer customer = new Customer();
+        customer.setUsername("Qqin");
+        customer.setJobs("student");
+        customer.setPhone("23333333333");
+        //4.2, 执行SqlSession的插入方法, 返回的是SQL语句影响的行数
+        int rows = sqlSession.insert("edu.cqupt.eini.chapter06.CustomerMapper.addCustomer", customer);
+        //4.3, 通过返回结果判断插入操作是否执行成功
+        if (rows > 0) {
+            System.out.println("成功插入了" + rows + "条数据!");
+        } else {
+            System.out.println("执行插入操作失败!!!");
+        }
+        //4.4, 提交事务, 增改删都进行事务操作
+        sqlSession.commit();
+        //5, 关闭sqlSession
+        sqlSession.close();
+    }
+
+    /**
+     * 更新客户
+     */
+    @Test
+    void updateCustomer() throws IOException {
+        //1, 读取配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //2, 根据配置文件构建SqlSessionFactory
+        SqlSessionFactory sqlSessionFactory =
+                new SqlSessionFactoryBuilder().build(inputStream);
+        //3, 通过SqlSessionFactory创建SqlSession
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //4, SqlSession执行添加操作
+        //4.1, 创建Customer对象, 并向对象中添加数据
+        Customer customer = new Customer();
+        customer.setId(4);
+        customer.setUsername("QIN");
+        customer.setJobs("Boss");
+        customer.setPhone("23333333333");
+        //4.2, 执行SqlSession的更新方法, 返回的是SQL语句影响的行数
+        int rows = sqlSession.update("edu.cqupt.eini.chapter06.CustomerMapper.updateCustomer", customer);
+        //4.3, 通过返回结果判断更新操作是否执行成功
+        if (rows > 0) {
+            System.out.println("成功修改了" + rows + "条数据!");
+        } else {
+            System.out.println("执行修改操作失败!!!");
+        }
+        //4.4, 提交事务, 增改删都进行事务操作
+        sqlSession.commit();
+        //5, 关闭sqlSession
+        sqlSession.close();
+    }
+
+    /**
+     * 删除客户
+     */
+    @Test
+    void deleteCustomer() throws IOException {
+        //1, 读取配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //2, 根据配置文件构建SqlSessionFactory
+        SqlSessionFactory sqlSessionFactory =
+                new SqlSessionFactoryBuilder().build(inputStream);
+        //3, 通过SqlSessionFactory创建SqlSession
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //4, SqlSession执行添加操作
+        //4.1, 执行SqlSession的删除方法, 返回的是SQL语句影响的行数
+        int rows = sqlSession.delete("edu.cqupt.eini.chapter06.CustomerMapper.deleteCustomer", 4);
+        //4.2, 通过返回结果判断删除操作是否执行成功
+        if (rows > 0) {
+            System.out.println("成功删除了" + rows + "条数据!");
+        } else {
+            System.out.println("执行删除操作失败!!!");
+        }
+        //4.4, 提交事务, 增改删都进行事务操作
+        sqlSession.commit();
+        //5, 关闭sqlSession
+        sqlSession.close();
+    }
 }

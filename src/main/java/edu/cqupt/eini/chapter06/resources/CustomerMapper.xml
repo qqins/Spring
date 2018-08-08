@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.cqupt.eini.chapter06.CustomerMapper">
-    <!--根据客户编号获取客户信息-->
+    <!--根据客户编号获取客户信息, parameterType是传入参数的属性, resultType是返回值的属性-->
     <select id="findCustomerById" parameterType="Integer" resultType="edu.cqupt.eini.chapter06.po.Customer">
         select * from t_customer where id = #{id}
     </select>
@@ -12,4 +12,21 @@
     <select id="findCustomerByName" parameterType="String" resultType="edu.cqupt.eini.chapter06.po.Customer">
         select * from t_customer where username like concat('%',#{value},'%')
     </select>
+
+    <!--添加客户信息-->
+    <insert id="addCustomer" parameterType="edu.cqupt.eini.chapter06.po.Customer">
+        insert into t_customer(username,jobs,phone)
+        values (#{username},#{jobs},#{phone})
+    </insert>
+
+    <!--修改客户信息-->
+    <update id="updateCustomer" parameterType="edu.cqupt.eini.chapter06.po.Customer">
+        update t_customer set username=#{username},jobs=#{jobs},phone=#{phone}
+        where id=#{id}
+    </update>
+
+    <!--删除客户信息-->
+    <delete id="deleteCustomer" parameterType="edu.cqupt.eini.chapter06.po.Customer">
+        delete from t_customer where id=#{id}
+    </delete>
 </mapper>

@@ -19,7 +19,7 @@
             <!--3.2 关联通知Advice和切入点pointCut-->
             <!--3.2.1 前置通知-->
             <aop:before method="myBefore" pointcut-ref="myPointCut"/>
-            <!--3.2.2 后置通知, 在方法返回之后执行, 就可以获得返回值
+            <!--3.2.2 后置通知, 在方法成功执行之后通知, 就可以获得返回值
                 returning属性: 用于设置后置通知的第二个参数的名称, 类型是Object-->
             <aop:after-returning method="myAfterReturning" pointcut-ref="myPointCut" returning="joinPoint"/>
             <!--3.2.3 环绕通知-->
