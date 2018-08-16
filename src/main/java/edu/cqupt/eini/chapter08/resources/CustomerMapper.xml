@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cqupt.eini.chapter08.CustomerMapper">
+    <!--<if>元素的使用-->
+    <!--<select id="findCustomerByNameAndJobs" parameterType="edu.cqupt.eini.chapter08.po.Customer"
+            resultType="edu.cqupt.eini.chapter08.po.Customer">
+        select * from t_customer where 1 = 1
+        <if test="username != null and username != ''">
+            and username like concat('%',#{username},'%')
+        </if>
+        <if test="jobs != null and jobs != ''">
+            and jobs = #{jobs}
+        </if>
+    </select>-->
+
+    <!--<where>元素的使用，只有<where>内的条件成立时，才会在拼接的SQL语句
+    中加入where关键字，还会去除多余的and，or-->
+    <select id="findCustomerByNameAndJobs" parameterType="edu.cqupt.eini.chapter08.po.Customer"
+            resultType="edu.cqupt.eini.chapter08.po.Customer">
+        select * from t_customer
+        <where>
+            <if test="username != null and username != ''">
+                and username like concat('%',#{username},'%')
+            </if>
+            <if test="jobs != null and jobs != ''">
+                and jobs = #{jobs}
+            </if>
+        </where>
+    </select>
+
+    <!--<choose>(<when>、<otherwise>)类似于switch-case-->
+    <!--<select id="findCustomerByNameOrJobs" parameterType="edu.cqupt.eini.chapter08.po.Customer"
+            resultType="edu.cqupt.eini.chapter08.po.Customer">
+        select * from t_customer where 1=1
+        <choose>
+            <when test="username != null and username != ''">
+                and username like concat('%',#{username},'%')
+            </when>
+            <when test="jobs != null and jobs != ''">
+                and jobs = #{jobs}
+            </when>
+            <otherwise>
+                and phone is not null
+            </otherwise>
+        </choose>
+    </select>-->
+
+    <!--<trim>元素的使用，去除特殊字符串，功能等效于<where>-->
+    <select id="findCustomerByNameOrJobs" parameterType="edu.cqupt.eini.chapter08.po.Customer"
+            resultType="edu.cqupt.eini.chapter08.po.Customer">
+        select * from t_customer
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="username != null and username != ''">
+                    and username like concat('%',#{username},'%')
+                </when>
+                <when test="jobs != null and jobs != ''">
+                    and jobs = #{jobs}
+                </when>
+                <otherwise>
+                    and phone is not null
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+
+    <!--<set>元素的使用，可以去除多余的逗号-->
+    <update id="updateCustomer" parameterType="edu.cqupt.eini.chapter08.po.Customer">
+        update t_customer
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="jobs != null and jobs != ''">
+                jobs = #{jobs},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--<foreach>元素使用-->
+    <select id="findCustomerByIds" parameterType="List"
+            resultType="edu.cqupt.eini.chapter08.po.Customer">
+        select * from t_customer where id in
+        <foreach collection="list" item="id" index="index"
+                 open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--<bind>元素的使用：根据客户名模糊查询客户信息-->
+    <select id="findCustomerByName" parameterType="edu.cqupt.eini.chapter08.po.Customer"
+            resultType="edu.cqupt.eini.chapter08.po.Customer">
+        <bind name="pattern_name" value="'%'+_parameter.getUsername()+'%'"/>
+        select * from t_customer
+        where
+        username like #{pattern_name}
+    </select>
+</mapper>

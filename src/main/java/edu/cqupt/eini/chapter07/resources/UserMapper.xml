@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--由于Customer中类属性与数据库表中属性是对应的，这时MyBatis会自动进行赋值，
+所以customer中findAll方法能返回所有值
+但是在实际开发中，有可能不是对应的，这时需要resultMap做映射-->
+<mapper namespace="edu.cqupt.eini.chapter07.UserMapper">
+    <resultMap id="resultMap" type="edu.cqupt.eini.chapter07.po.User">
+        <id property="id" column="id"/>
+        <result property="xingMing" column="name"/>
+        <result property="age" column="age"/>
+    </resultMap>
+    <select id="findAllUser" resultMap="resultMap">
+        select * from t_user
+    </select>
+</mapper>

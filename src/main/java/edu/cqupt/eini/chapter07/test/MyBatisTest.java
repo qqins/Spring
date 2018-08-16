@@ -1,6 +1,8 @@
-package edu.cqupt.eini.chapter06.test;
+package edu.cqupt.eini.chapter07.test;
 
-import edu.cqupt.eini.chapter06.po.Customer;
+import edu.cqupt.eini.chapter07.po.Customer;
+import edu.cqupt.eini.chapter07.po.User;
+import edu.cqupt.eini.chapter07.utils.MyBatisUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -23,17 +25,18 @@ public class MyBatisTest {
      */
     @Test
     void findCustomerById() throws IOException {
-        //1, 读取配置文件
+       /* //1, 读取配置文件
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         //2, 根据配置文件构建SqlSessionFactory
         SqlSessionFactory sqlSessionFactory =
                 new SqlSessionFactoryBuilder().build(inputStream);
         //3, 通过SqlSessionFactory创建SqlSession
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession();*/
+        SqlSession sqlSession = MyBatisUtils.getSession();
         try {
             //4, SqlSession执行映射文件中定义的SQL, 并返回映射结果
-            Customer customer = sqlSession.selectOne("edu.cqupt.eini.chapter06.CustomerMapper.findCustomerById", 1);
+            Customer customer = sqlSession.selectOne("edu.cqupt.eini.chapter07.CustomerMapper.findCustomerById", 1);
             System.out.println(customer.toString());
         } finally {
             //5, 关闭SqlSession
@@ -55,7 +58,22 @@ public class MyBatisTest {
         //3, 通过SqlSessionFactory创建SqlSession
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             //4, SqlSession执行映射文件中定义的SQL, 并返回映射结果
-            List<Customer> customers = sqlSession.selectList("edu.cqupt.eini.chapter06.CustomerMapper.findCustomerByName", "J");
+            List<Customer> customers = sqlSession.selectList("edu.cqupt.eini.chapter07.CustomerMapper" +
+                    ".findCustomerByName", "J");
+            for (Customer customer : customers) {
+                System.out.println(customer);
+            }
+        }
+    }
+
+    /**
+     * 查找所有信息
+     */
+    @Test
+    void findAll() {
+        try (SqlSession sqlSession = MyBatisUtils.getSession()){
+            List<Customer> customers = sqlSession.selectList("edu.cqupt.eini.chapter07.CustomerMapper" +
+                    ".findAll");
             for (Customer customer : customers) {
                 System.out.println(customer);
             }
@@ -83,7 +101,7 @@ public class MyBatisTest {
             customer.setJobs("student");
             customer.setPhone("23333333333");
             //4.2, 执行SqlSession的插入方法, 返回的是SQL语句影响的行数
-            int rows = sqlSession.insert("edu.cqupt.eini.chapter06.CustomerMapper.addCustomer", customer);
+            int rows = sqlSession.insert("edu.cqupt.eini.chapter07.CustomerMapper.addCustomer", customer);
             //4.3, 通过返回结果判断插入操作是否执行成功
             if (rows > 0) {
                 System.out.println("成功插入了" + rows + "条数据!");
@@ -92,6 +110,8 @@ public class MyBatisTest {
             }
             //4.4, 提交事务, 增改删都进行事务操作
             sqlSession.commit();
+            //获取插入数据的主键id
+            System.out.println(customer.getId());
         } finally {
             //5, 关闭sqlSession
             sqlSession.close();
@@ -119,7 +139,7 @@ public class MyBatisTest {
             customer.setJobs("Boss");
             customer.setPhone("23333333333");
             //4.2, 执行SqlSession的更新方法, 返回的是SQL语句影响的行数
-            int rows = sqlSession.update("edu.cqupt.eini.chapter06.CustomerMapper.updateCustomer", customer);
+            int rows = sqlSession.update("edu.cqupt.eini.chapter07.CustomerMapper.updateCustomer", customer);
             //4.3, 通过返回结果判断更新操作是否执行成功
             if (rows > 0) {
                 System.out.println("成功修改了" + rows + "条数据!");
@@ -147,7 +167,7 @@ public class MyBatisTest {
         try {
             //4, SqlSession执行添加操作
             //4.1, 执行SqlSession的删除方法, 返回的是SQL语句影响的行数
-            int rows = sqlSession.delete("edu.cqupt.eini.chapter06.CustomerMapper.deleteCustomer", 4);
+            int rows = sqlSession.delete("edu.cqupt.eini.chapter07.CustomerMapper.deleteCustomer", 4);
             //4.2, 通过返回结果判断删除操作是否执行成功
             if (rows > 0) {
                 System.out.println("成功删除了" + rows + "条数据!");
@@ -159,6 +179,20 @@ public class MyBatisTest {
         } finally {
             //5, 关闭sqlSession
             sqlSession.close();
+        }
+    }
+
+    /**
+     * 查询User中所有值
+     */
+    @Test
+    void findAllUser() {
+        try (SqlSession sqlSession=MyBatisUtils.getSession()){
+            List<User> list = sqlSession.selectList("edu.cqupt.eini.chapter07.UserMapper" +
+                    ".findAllUser");
+            for (User user : list) {
+                System.out.println(user);
+            }
         }
     }
 }
