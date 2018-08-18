@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+Mapper代理开发的规范
+1, Mapper接口的名称和对应的Mapper.xml文件的名称必须一致
+2, Mapper.xml文件的namespace与Mapper接口的类路径相同
+3, Mapper接口方法中的方法名和Mapper.xml中定义的每个执行语句的id相同
+4, Mapper接口中方法输入参数类型和Mapper.xml中定义的每个SQL的parameterType类型相同
+5, Mapper接口方法的输出参数类型要和Mapper.xml中定义的每个SQL的resultType类型相同
+-->
+<mapper namespace="edu.cqupt.eini.chapter10.mapper.CustomerMapper">
+    <select id="findCustomerById" parameterType="Integer" resultType="customer">
+        select * from t_customer where id=#{id}
+    </select>
+
+    <insert id="addCustomer" parameterType="customer">
+        insert into t_customer(username,jobs,phone)
+        values (#{username},#{jobs},#{phone})
+    </insert>
+</mapper>
