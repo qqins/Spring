@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="edu.cqupt.eini.chapter15.controller"/>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--设置前缀-->
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <!--设置后缀-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <!--使用bean直接定义在此的拦截器将拦截所以请求-->
+        <!--<bean class="edu.cqupt.eini.chapter15.interceptor.CustomInterceptor"/>-->
+        
+        <!--拦截器1-->
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="edu.cqupt.eini.chapter15.interceptor.Interceptor1"/>
+        </mvc:interceptor>-->
+
+        <!--拦截器2-->
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/hello"/>
+            <bean class="edu.cqupt.eini.chapter15.interceptor.Interceptor2"/>
+        </mvc:interceptor>-->
+
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="edu.cqupt.eini.chapter15.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>
